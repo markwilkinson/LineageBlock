@@ -2,15 +2,21 @@ PATH
   remote: .
   specs:
     lineage_block (0.1.0)
+      blockchain-lite (~> 1.4, >= 1.4.1)
       digest (~> 3.1.0)
+      ledger-lite (~> 1.1, >= 1.1.1)
 
 GEM
   remote: https://rubygems.org/
   specs:
     ast (2.4.2)
+    blockchain-lite (1.4.1)
+      merkletree
     diff-lcs (1.5.0)
     digest (3.1.0)
     json (2.6.2)
+    ledger-lite (1.1.1)
+    merkletree (0.1.1)
     parallel (1.22.1)
     parser (3.1.2.1)
       ast (~> 2.4.1)
