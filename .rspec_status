@@ -1,0 +1,11 @@
+example_id                        | status | run_time        |
+--------------------------------- | ------ | --------------- |
+./spec/lineage_block_spec.rb[1:1] | passed | 0.0046 seconds  |
+./spec/lineage_block_spec.rb[2:1] | passed | 0.00312 seconds |
+./spec/lineage_block_spec.rb[2:2] | passed | 0.00241 seconds |
+./spec/lineage_block_spec.rb[2:3] | passed | 0.00269 seconds |
+./spec/lineage_block_spec.rb[2:4] | passed | 0.00024 seconds |
+./spec/lineage_block_spec.rb[3:1] | passed | 0.0005 seconds  |
+./spec/lineage_block_spec.rb[3:2] | passed | 0.00012 seconds |
+./spec/lineage_block_spec.rb[3:3] | passed | 0.00008 seconds |
+./spec/lineage_block_spec.rb[3:4] | passed | 0.00008 seconds |

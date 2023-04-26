@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-warn `pwd`; abort
-
 require "./spec/spec_helper"
 
 RSpec.describe LineageBlock do
