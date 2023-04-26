@@ -1,5 +1,6 @@
 # frozen_string_literal: true
-require 'rspec'
+
+require "rspec"
 require_relative "../lib/lineage_block"
 
 RSpec.configure do |config|

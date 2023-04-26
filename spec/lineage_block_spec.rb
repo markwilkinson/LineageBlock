@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-require "./spec_helper"
+warn `pwd`; abort
+
+require "./spec/spec_helper"
 
 RSpec.describe LineageBlock do
   it "has a version number" do
