@@ -22,11 +22,12 @@ module LineageBlock
       @@banks
     end
 
-    def self.load(leger: "/tmp/leger_frozen.json")
-      if File.exist?("/tmp/leger_frozen.json")
-        # File.open("/tmp/leger_frozen.json") do |f|
+    def self.load(ledger: "/tmp/ledger_frozen.json")
+      if File.exist?("/tmp/ledger_frozen.json")
+        # File.open("/tmp/ledger_frozen.json") do |f|
         #   leger =
       end
+      ledger
     end
   end
 end

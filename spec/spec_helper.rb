@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 require "rspec"
-require_relative "../lib/lineage_block"
-require_relative "../lib/lineage_bank"
-require_relative "../lib/lineage_ledger"
-require_relative "../lib/lineage_stock"
+require_relative "../lib/lineageblock/lineage_block"
+require_relative "../lib/lineageblock/lineage_bank"
+require_relative "../lib/lineageblock/lineage_ledger"
+require_relative "../lib/lineageblock/lineage_stock"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

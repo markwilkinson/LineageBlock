@@ -28,48 +28,50 @@ require "blockchain-lite/proof_of_work/block"  # NOTE: use proof-of-work block o
 
 # require 'tulipmania/tool'
 
-require_relative "./lineage_block"
-require_relative "./lineage_bank"
-require_relative "./lineage_ledger"
-require_relative "./lineage_stock"
+require_relative "./lineageblock/version"
+require_relative "./lineageblock/service"
+require_relative "./lineageblock/lineage_block"
+require_relative "./lineageblock/lineage_bank"
+require_relative "./lineageblock/lineage_ledger"
+require_relative "./lineageblock/lineage_stock"
+
+# This is the main thingy
 
 module LineageBlock
+
+  # This is the main Configuration
+
   class Configuration
     ## user/node settings
-    attr_accessor :address ## single wallet address (for now "clear" name e.g. Anne, Vincent, etc.)
-
+    attr_accessor :address ## Addreswsw of this wallet
     BANKS = load_banks
     # ['BGV', 'Gatersleben]
 
     ## system/blockchain settings
     attr_accessor :coinbase
-    attr_accessor :mining_reward, :tulips ## rename to assets/commodities/etc. - why? why not?
+    attr_accessor :mining_reward, :species ## rename to assets/commodities/etc. - why? why not?
 
     ## note: add a (†) coinbase / grower marker
-    TULIP_GROWERS = ["Dutchgrown†", "Keukenhof†", "Flowers†",
-                     "Bloom & Blossom†", "Teleflora†"]
+    #TULIP_GROWERS = ["Dutchgrown†", "Keukenhof†", "Flowers†",
+    #                 "Bloom & Blossom†", "Teleflora†"]
 
-    TULIPS = ["Semper Augustus",
-              "Admiral van Eijck",
-              "Admiral of Admirals",
-              "Red Impression",
-              "Bloemendaal Sunset"]
+    SPECIES = load_species
 
     def initialize
       ## try default setup via ENV variables
       ## pick "random" address if nil (none passed in)
-      @address = ENV["TULIPMANIA_NAME"] || rand_address
+      @address = ENV["GERMPLASM_BANK_NAME"] || "BGV"
 
-      @coinbase      = TULIP_GROWERS ## use a different name for coinbase - why? why not?
+      #@coinbase      = TULIP_GROWERS ## use a different name for coinbase - why? why not?
       ##  note: for now is an array (multiple growsers)
 
       @tulips        = TULIPS ## change name to commodities or assets - why? why not?
       @mining_reward = 5
     end
 
-    def rand_address = WALLET_ADDRESSES.[](rand(WALLET_ADDRESSES.size))
-    def rand_tulip = @tulips.[](rand(@tulips.size))
-    def rand_coinbase = @coinbase.[](rand(@coinbase.size))
+    #def rand_address = WALLET_ADDRESSES.[](rand(WALLET_ADDRESSES.size))
+    #def rand_tulip = @tulips.[](rand(@tulips.size))
+    #def rand_coinbase = @coinbase.[](rand(@coinbase.size))
 
     def coinbase?(address) ## check/todo: use wallet - why? why not? (for now wallet==address)
       @coinbase.include?(address)

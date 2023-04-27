@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "lib/lineage_block/version"
+require_relative "lib/lineageblock/version"
 
 Gem::Specification.new do |spec|
   spec.name = "lineage_block"
