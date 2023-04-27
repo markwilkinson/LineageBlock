@@ -2,16 +2,17 @@
 
 require "ledger-lite"
 
-module LineageLedger
+module LineageBlock
   class Error < StandardError
   end
 
-  # This class represents a block
+  # This class represents a ledger
   class Ledger < LedgerLite::Ledger
     attr_reader :data, :timestamp, :prev_hash, :hash
 
-    def initialize(data:, prev_hash: nil)
-      super.new
+    def initialize()
+      LineageLedger::Ledger.config.coinbase=["GermplasmBank"]
+      super()
     end
 
     def unpack(tx)
