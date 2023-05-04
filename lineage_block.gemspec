@@ -35,8 +35,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec", "~> 3.11"
 
   # Uncomment to register a new dependency of your gem
-  spec.add_dependency "digest", "~> 3.1.0"
   spec.add_dependency "blockchain-lite", "~> 1.4", ">= 1.4.1"
+  spec.add_dependency "digest", "~> 3.1.0"
   spec.add_dependency "ledger-lite", "~> 1.1", ">= 1.1.1" 
   
   # For more information and examples about making a new gem, check out our

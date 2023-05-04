@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
 require "digest/sha2"
+require "blockchain-lite"
+# Block = BlockchainLite::ProofOfWork::Block
 module LineageBlock
   class Error < StandardError
   end
 
   # This class represents a block
-  Block = BlockchainLite::ProofOfWork::Block
-  class Block
+  class Block < BlockchainLite::ProofOfWork::Block
     attr_reader :data, :timestamp, :prev_hash, :hash
 
     def to_h
