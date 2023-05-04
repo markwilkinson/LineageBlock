@@ -34,6 +34,14 @@ require_relative "./lineageblock/lineage_block"
 require_relative "./lineageblock/lineage_bank"
 require_relative "./lineageblock/lineage_ledger"
 require_relative "./lineageblock/lineage_stock"
+require_relative "./lineageblock/node"
+require_relative "./lineageblock/pool"
+require_relative "./lineageblock/exchange"
+require_relative "./lineageblock/wallet"
+require_relative "./lineageblock/cache"
+require_relative "./lineageblock/transaction"
+require_relative "./lineageblock/main_application"
+require_relative "./lineageblock/web_service"
 
 # This is the main thingy
 
@@ -43,52 +51,46 @@ module LineageBlock
 
   class Configuration
     ## user/node settings
-    attr_accessor :address ## Addreswsw of this wallet
-    BANKS = load_banks
-    # ['BGV', 'Gatersleben]
+    attr_accessor :wallet ## Addreswsw of this wallet
 
-    ## system/blockchain settings
-    attr_accessor :coinbase
+    BANKS = load_banks
+    SPECIES = load_species
+
+    # attr_accessor :coinbase
     attr_accessor :mining_reward, :species ## rename to assets/commodities/etc. - why? why not?
 
     ## note: add a (†) coinbase / grower marker
-    #TULIP_GROWERS = ["Dutchgrown†", "Keukenhof†", "Flowers†",
+    # TULIP_GROWERS = ["Dutchgrown†", "Keukenhof†", "Flowers†",
     #                 "Bloom & Blossom†", "Teleflora†"]
 
-    SPECIES = load_species
 
     def initialize
       ## try default setup via ENV variables
       ## pick "random" address if nil (none passed in)
-      @address = ENV["GERMPLASM_BANK_NAME"] || "BGV"
+      @wallet = ENV["GERMPLASM_BANK_NAME"] || "BGV"
 
-      #@coinbase      = TULIP_GROWERS ## use a different name for coinbase - why? why not?
-      ##  note: for now is an array (multiple growsers)
+      #@coinbase      = CORE
 
-      @tulips        = TULIPS ## change name to commodities or assets - why? why not?
-      @mining_reward = 5
+      @species        = SPECIES
+      @mining_reward = 0
     end
 
-    #def rand_address = WALLET_ADDRESSES.[](rand(WALLET_ADDRESSES.size))
-    #def rand_tulip = @tulips.[](rand(@tulips.size))
-    #def rand_coinbase = @coinbase.[](rand(@coinbase.size))
-
-    def coinbase?(address) ## check/todo: use wallet - why? why not? (for now wallet==address)
-      @coinbase.include?(address)
-    end
+    # def coinbase?(wallet) 
+    #  @coinbase.include?(wallet)
+    # end
 
     def load_banks # "wallets"
-      { "BGV" => Digest::SHA2.hexdigest("BGV"), "Gatersleben" => Digest::SHA2.hexdigest("Gatersleben") }
+      return { Digest::SHA2.hexdigest("BGV") => "BGV", Digest::SHA2.hexdigest("Gatersleben") => "Gatersleben" }
     end
 
-    def load_stocks # "currencies"
-      { "https://www.gbif.org/species/2764178" => { name: "Commelina cyanea" }, "https://www.gbif.org/species/3118274" => { name: "Tanacetum vulgare L." } }
+    def load_species # "currencies"
+      return { "https://www.gbif.org/species/2764178" => { name: "Commelina cyanea" }, "https://www.gbif.org/species/3118274" => { name: "Tanacetum vulgare L." } }
     end
   end # class Configuration
 
   ## lets you use
-  ##   Tulipmania.configure do |config|
-  ##      config.address = 'Anne'
+  ##   LineageBlock.configure do |config|
+  ##      config.wallet = Digest::SHA2.hexdigest("BGV")
   ##   end
 
   def self.configure
@@ -99,11 +101,11 @@ module LineageBlock
     @config ||= Configuration.new
   end
 
-  ## add command line binary (Application) e.g. $ try centralbank -h
+  ## add command line binary (Application)
   def self.main
     Application.new.run(ARGV)
   end
 end # module LinageBlock
 
 # say hello
-puts Tulipmania::Service.banner
+puts LineageBlock::Service.banner

@@ -6,46 +6,82 @@ module LineageBlock
   end
 
   # This class represents a block
+  Block = BlockchainLite::ProofOfWork::Block
   class Block
     attr_reader :data, :timestamp, :prev_hash, :hash
 
-    def initialize(data:, prev_hash: nil)
-      @data = data
-      @timestamp = Time.now
-      @prev_hash = prev_hash
-      @hash = calculate_hash
+    def to_h
+      { index: @index,
+        timestamp: @timestamp,
+        nonce: @nonce,
+        # transactions: @transactions.map { |tx| tx.to_h },
+        transactions: @transactions.map(&:to_h),
+        previous_hash: @previous_hash }
     end
 
-    def calculate_hash
-      Digest::SHA256.hexdigest("#{@prev_hash}#{@timestamp}#{@data}")
+    def self.from_h(h)
+      transactions = h["transactions"].map { |h_tx| Tx.from_h(h_tx) }
+
+      ## parse iso8601 format e.g 2017-10-05T22:26:12-04:00
+      timestamp    = Time.parse(h["timestamp"])
+
+      new(h["index"],
+          transactions,
+          h["previous_hash"],
+          timestamp: timestamp,
+          nonce: h["nonce"].to_i)
+    end
+
+    def valid?
+      true ## for now always valid
     end
   end
 
   # This class represents the blockchain
   class Blockchain
-    attr_reader :chain
+    extend Forwardable
+    def_delegators :@chain, :[], :size, :each, :empty?, :any?, :last
 
-    def initialize
-      @chain = [genesis_block]
+    def initialize(chain = [])
+      @chain = chain
     end
 
-    def genesis_block
-      Block.new(data: "This is the first block in the chain.", prev_hash: "0")
+    def timestamp1637
+      ## change year to 1637 :-)
+      ##   note: time (uses signed integer e.g. epoch/unix time starting in 1970 with 0)
+      ##  todo: add nano/mili-seconds - why? why not? possible?
+      now = Time.now.utc.to_datetime
+      DateTime.new(1637, now.month, now.mday, now.hour, now.min, now.sec, now.zone)
     end
 
-    def last_block
-      @chain[-1]
+    def <<(txs)
+      ## todo: check if is block or array
+      ##   if array (of transactions) - auto-add (build) block
+      ##   allow block - why? why not?
+      ##  for now just use transactions (keep it simple :-)
+
+      block = if @chain.size.zero?
+                Block.first(txs, timestamp: timestamp1637)
+              else
+                Block.next(@chain.last, txs, timestamp: timestamp1637)
+              end
+      @chain << block
     end
 
-    def add_block(data:)
-      new_block = Block.new(data: data, prev_hash: last_block.hash)
-      @chain << new_block
+    def as_json
+      # @chain.map { |block| block.to_h }
+      @chain.map(&:to_h)
     end
 
-    def valid?
-      (1...@chain.length).all? do |i|
-        @chain[i].prev_hash == @chain[i - 1].hash
-      end
+    def transactions
+      ## "accumulate" get all transactions from all blocks "reduced" into a single array
+      @chain.reduce([]) { |acc, block| acc + block.transactions }
     end
-  end
+
+    def self.from_json(data)
+      ## note: assumes data is an array of block records/objects in json
+      chain = data.map { |h| Block.from_h(h) }
+      new(chain)
+    end
+  end  # class Blockchain
 end
